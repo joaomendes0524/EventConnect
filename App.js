@@ -10,7 +10,10 @@ import LoginDivulgador from "./screens/LoginDivulgador";
 import LoginParticipante from "./screens/LoginParticipante";
 import RedefPassword from "./screens/RedefinePassword";
 import ForgotPassword from "./screens/ForgotPassword";
-import CreateEvent from "./screens/CreateEvent";
+import MainTabs from './screens/MainTabs';
+import DivulgadorTabs from './screens/DivulgadorTabs'
+import EditMyEvent from './screens/EditMyEvent'
+// import CreateEvent from "./screens/CreateEvent";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,7 +44,7 @@ export default function App() {
               backgroundColor: '#6100FF'
             },
             headerTintColor: '#fff',
-          }} 
+          }}
         />
 
         <Stack.Screen
@@ -129,8 +132,24 @@ export default function App() {
         />
 
         <Stack.Screen
-          name="CreateEvent"
-          component={CreateEvent}
+          name="MainTabs"
+          component={MainTabs}
+          options={{
+            headerShown: false, // Esconde o cabeçalho padrão para as abas
+          }}
+        />
+
+        <Stack.Screen
+          name="DivulgadorTabs"
+          component={DivulgadorTabs}
+          options={{
+            headerShown: false, // Esconde o cabeçalho padrão para as abas
+          }}
+        />
+
+        <Stack.Screen
+          name="EditMyEvent"
+          component={EditMyEvent}
           options={{
             title: "",
             headerStyle: {

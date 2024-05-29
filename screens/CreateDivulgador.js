@@ -45,7 +45,7 @@ export default function CreateDivulgador({ navigation }) {
           colors={['#9D66F6', '#8148DC', '#5D21BC']}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('');
+              navigation.navigate('LoginDivulgador');
             }}>
             <Text style={styles.txtRegister}>CRIAR</Text>
           </TouchableOpacity>

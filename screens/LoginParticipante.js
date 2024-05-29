@@ -37,7 +37,7 @@ export default function LoginParticipante({ navigation }) {
         colors={['#9D66F6', '#8148DC', '#5D21BC']}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate(''); {/*IR PARA FEED*/}
+            navigation.navigate('MainTabs'); {/*IR PARA FEED*/}
           }}>
           <Text style={styles.txtRegister}>Entrar</Text>
         </TouchableOpacity>

@@ -51,7 +51,7 @@ export default function CreateParticipante({ navigation }) {
                 colors={['#9D66F6', '#8148DC', '#5D21BC']}>
                 <TouchableOpacity
                     onPress={() => {
-                        navigation.navigate('');
+                        navigation.navigate('LoginParticipante');
                     }}>
                     <Text style={styles.txtRegister}>CRIAR</Text>
                 </TouchableOpacity>
