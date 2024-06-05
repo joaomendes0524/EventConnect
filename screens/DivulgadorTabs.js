@@ -15,14 +15,14 @@ export default function DivulgadorTabs() {
 
     <Tab.Navigator initialRouteName="CRIAR EVENTO"
       screenOptions={{
-        tabBarActiveTintColor: '#6100FF', // Cor dos ícones e texto ativos
-        tabBarInactiveTintColor: '#FFFFFF', // Cor dos ícones e texto inativos
+        tabBarActiveTintColor: '#6100FF',
+        tabBarInactiveTintColor: '#FFFFFF', 
         tabBarStyle: {
-          backgroundColor: '#6100FF', // Cor de fundo da barra de navegação
+          backgroundColor: '#6100FF',
           borderTopRightRadius: 15,
           borderTopLeftRadius: 15,
         },
-        tabBarShowLabel: false, // Remove o texto embaixo dos ícones
+        tabBarShowLabel: false,
       }}
     >
       <Tab.Screen

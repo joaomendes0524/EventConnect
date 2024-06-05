@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
-// Dados fictícios de eventos
 const dummyEvents = [
   {
     id: '1',
@@ -27,7 +26,6 @@ const dummyEvents = [
     description: 'Workshop de Tecnologia',
     date: '2023-07-10',
   },
-  // Adicione mais eventos fictícios conforme necessário
 ];
 
 export default function SearchScreen() {

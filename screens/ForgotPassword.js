@@ -104,29 +104,21 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     button: {
-        // textAlign: 'center',
-        // marginTop: 30,
         padding: 10,
         borderRadius: 20,
         width: '50%',
         textAlign: 'center',
-        // justifyContent: 'center',
     },
     iconButton: {
         color: '#fff',
         marginTop: '100',
-        // alignItems: 'center',
         width: 28,
-        // marginTop: 3
     },
     txtButton: {
         fontSize: 15,
         fontWeight: 'bold',
         color: 'white',
         textAlign: 'center',
-        // alignSelf: 'center',
         marginBottom: 4,
-        // marginLeft: 45,
-        // marginTop: 3
     },
 });

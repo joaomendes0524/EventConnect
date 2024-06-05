@@ -72,13 +72,6 @@ export default function FeedScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-
-        <Text style={styles.likes}>Liked by Huge and others 1,900</Text>
-        {/* <View style={styles.likers}>
-          <Image source={require('../assets/imagens/image-background.jpeg')} style={styles.likerAvatar} />
-          <Image source={require('../assets/imagens/image-background.jpeg')} style={styles.likerAvatar} />
-          <Image source={require('../assets/imagens/image-background.jpeg')} style={styles.likerAvatar} />
-        </View> */}
       </View>
     );
   
@@ -170,60 +163,3 @@ export default function FeedScreen({ navigation }) {
       marginRight: 5,
     },
   });
-
-// CÓDIGO TENTANDO UTILIZAR O AXIOS E APLICANDO FUNCIONALIDADES DE SEGUIR E DAR LIKE
-
-
-//                ADICIONAR OS IMPORTS:                //
-
-//   import React, { useState, useEffect } from 'react';
-//   import axios from 'axios';
-  
-//   export default function FeedScreen({ navigation }) {
-//     const [posts, setPosts] = useState([]);
-  
-//     useEffect(() => {
-//       fetchPosts();
-//     }, []);
-  
-//     const fetchPosts = async () => {
-//       try {
-//         const response = await axios.get('URL_DO_SEU_BACKEND/posts');
-//         setPosts(response.data);
-//       } catch (error) {
-//         console.error('Erro ao buscar posts:', error);
-//       }
-//     };
-  
-//     const handleFollow = async (userId) => {
-//       try {
-//         // Lógica para enviar uma solicitação POST para o backend para seguir o usuário
-//         // Substitua 'followEndpoint' pelo endpoint real do seu backend para seguir usuários
-//         await axios.post('followEndpoint', { userIdToFollow: userId });
-  
-//         // Atualizar visualmente o estado do botão
-//         // Por exemplo, você pode alterar a cor do botão ou o texto para refletir que o usuário está sendo seguido
-//         Alert.alert('Sucesso', 'Você está seguindo o usuário!');
-//       } catch (error) {
-//         console.error('Erro ao seguir usuário:', error);
-//         Alert.alert('Erro', 'Ocorreu um erro ao tentar seguir o usuário. Por favor, tente novamente mais tarde.');
-//       }
-//     };
-  
-//     const handleLike = async (postId) => {
-//       try {
-//         // Lógica para enviar uma solicitação POST para o backend para dar like na publicação
-//         // Substitua 'likeEndpoint' pelo endpoint real do seu backend para dar like em publicações
-//         await axios.post('likeEndpoint', { postId });
-  
-//         // Atualizar visualmente o ícone de "Curtir"
-//         // Por exemplo, você pode alterar a cor do ícone ou o estado interno para refletir que a publicação foi curtida
-//         Alert.alert('Sucesso', 'Você curtiu a publicação!');
-//       } catch (error) {
-//         console.error('Erro ao dar like na publicação:', error);
-//         Alert.alert('Erro', 'Ocorreu um erro ao tentar dar like na publicação. Por favor, tente novamente mais tarde.');
-//       }
-//     };
-//
-//
-//      CONTINUA A PARTIR DE : const renderItem = ({ item }) => (

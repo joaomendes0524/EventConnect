@@ -11,7 +11,6 @@ const followedProfiles = [
   { id: '5', name: 'forrozinho 4', avatar: require('../assets/imagens/image-background.jpeg') },
   { id: '6', name: 'forrozinho 5', avatar: require('../assets/imagens/image-background.jpeg') },
   { id: '7', name: 'forrozinho 6', avatar: require('../assets/imagens/image-background.jpeg') },
-  // Adicione mais perfis conforme necessário
 ];
 
 const posts = {
