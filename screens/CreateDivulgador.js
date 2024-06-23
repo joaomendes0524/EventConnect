@@ -21,21 +21,21 @@ export default function CreateDivulgador({ navigation }) {
 
     try {
       const response = await axios.post('http://192.168.0.6:3000/divulgador/register', {
-      name,
-      password,
-      email,
-      cnpj,
- });
+        name,
+        password,
+        email,
+        cnpj,
+      });
 
 
- if (response.status === 201) {
-      const { token } = response.data;
-      await AsyncStorage.setItem('userToken', token); // Armazenar o token no AsyncStorage
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Definir o token no cabeçalho do Axios
+      if (response.status === 201) {
+        const { token } = response.data;
+        await AsyncStorage.setItem('userToken', token); // Armazenar o token no AsyncStorage
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Definir o token no cabeçalho do Axios
 
-      Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
-      navigation.navigate('LoginDivulgador');
- }
+        Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
+        navigation.navigate('LoginDivulgador');
+      }
     } catch (error) {
       console.error(error);
       Alert.alert('Erro', 'Erro ao cadastrar usuário. Por favor, tente novamente.')
@@ -104,7 +104,6 @@ export default function CreateDivulgador({ navigation }) {
     </SafeAreaView>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {

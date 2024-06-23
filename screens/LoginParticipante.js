@@ -103,22 +103,23 @@ export default function LoginParticipante({ navigation }) {
 }
 
 
+
 const styles = StyleSheet.create({
-    btmLoginCom: {
-        backgroundColor: '#FFF',
-        borderColor: 'black',
-        borderWidth: 0.1,
-        borderRadius: 15,
-        paddingHorizontal: 40,
-        padding: 10,
-        margin: 5,
-    },
-    containerLoginCom: {
-        padding: 20,
-        flexDirection: 'row',
-        justifyContent: 'center',
-    },
-  btmCreate:{
+  btmLoginCom: {
+    backgroundColor: '#FFF',
+    borderColor: 'black',
+    borderWidth: 0.1,
+    borderRadius: 15,
+    paddingHorizontal: 40,
+    padding: 10,
+    margin: 5,
+  },
+  containerLoginCom: {
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  btmCreate: {
     flexDirection: 'row',
     justifyContent: 'center',
     paddingTop: 20,

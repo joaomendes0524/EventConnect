@@ -40,7 +40,7 @@ export default function CreateParticipante({ navigation }) {
             <Text style={styles.texto}>Olá! Cadastre-se para começar</Text>
 
             <View style={styles.containerTxtInput}>
-                <MaterialIcons style={styles.iconTextInput} name='account-edit' size={20}/>
+                <MaterialIcons style={styles.iconTextInput} name='account-edit' size={20} />
                 <TextInput
                     style={styles.txtInput}
                     placeholder='NOME'
@@ -51,7 +51,7 @@ export default function CreateParticipante({ navigation }) {
             </View>
 
             <View style={styles.containerTxtInput}>
-                <MaterialIcons style={styles.iconTextInput} name='account-eye' size={20}/>
+                <MaterialIcons style={styles.iconTextInput} name='account-eye' size={20} />
                 <TextInput
                     style={styles.txtInput}
                     placeholder='NOME DE USUÁRIO'
@@ -62,7 +62,7 @@ export default function CreateParticipante({ navigation }) {
             </View>
 
             <View style={styles.containerTxtInput}>
-                <MaterialIcons style={styles.iconTextInput} name='email' size={20}/>
+                <MaterialIcons style={styles.iconTextInput} name='email' size={20} />
                 <TextInput
                     style={styles.txtInput}
                     placeholder='E-MAIL'
@@ -73,7 +73,7 @@ export default function CreateParticipante({ navigation }) {
             </View>
 
             <View style={styles.containerTxtInput}>
-                <MaterialIcons style={styles.iconTextInput} name='form-textbox-password' size={20}/>
+                <MaterialIcons style={styles.iconTextInput} name='form-textbox-password' size={20} />
                 <TextInput
                     style={styles.txtInput}
                     placeholder='SUA SENHA'
@@ -84,7 +84,7 @@ export default function CreateParticipante({ navigation }) {
             </View>
 
             <View style={styles.containerTxtInput}>
-                <MaterialIcons style={styles.iconTextInput} name='form-textbox-password' size={20}/>
+                <MaterialIcons style={styles.iconTextInput} name='form-textbox-password' size={20} />
                 <TextInput
                     style={styles.txtInput}
                     placeholder='CONFIRME SUA SENHA'
@@ -105,19 +105,23 @@ export default function CreateParticipante({ navigation }) {
             {/* <View style={styles.containerLoginCom}>
                 <TouchableOpacity style={styles.btmLoginCom}>
                     <Image source={require('../assets/imagens/google.png')} />
+                    <Image source={require('../assets/imagens/google.png')} />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.btmLoginCom}>
                     <Image source={require('../assets/imagens/facebook.png')} />
+                    <Image source={require('../assets/imagens/facebook.png')} />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.btmLoginCom}>
+                    <Image source={require('../assets/imagens/apple.png')} />
                     <Image source={require('../assets/imagens/apple.png')} />
                 </TouchableOpacity>
             </View> */}
         </SafeAreaView>
     );
 }
+
 
 
 const styles = StyleSheet.create({
