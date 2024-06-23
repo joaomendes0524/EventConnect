@@ -1,86 +1,124 @@
-import { SafeAreaView, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient';
+import axios from 'axios';
 
 export default function CreateParticipante({ navigation }) {
+    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const handleRegister = async () => {
+        if (password !== confirmPassword) {
+            Alert.alert('Erro', 'As senhas não coincidem');
+            return;
+        }
+
+        try {
+            const response = await axios.post('http://192.168.28.44:3000/users/register', {
+                name,
+                username,
+                email,
+                password,
+            });
+
+            if (response.status === 201) {
+                Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
+                navigation.navigate('LoginParticipante');
+            }
+        } catch (error) {
+            console.error(error);
+            Alert.alert('Erro', 'Erro ao cadastrar usuário. Por favor, tente novamente.');
+        }
+    };
+
     return (
         <SafeAreaView style={styles.container}>
+            <Text style={styles.texto}>Olá! Cadastre-se para começar</Text>
 
-            {/*TITULO DE CADASTRO*/}
-            {<Text style={styles.texto}>Olá! Cadastre-se para começar</Text>}
-
-            {/*TEXTINPUT DE NOME*/}
             <View style={styles.containerTxtInput}>
                 <MaterialIcons style={styles.iconTextInput} name='account-edit' size={20}/>
-                <TextInput style={styles.txtInput} placeholder='NOME' keyboardType='email-address'/>
+                <TextInput
+                    style={styles.txtInput}
+                    placeholder='NOME'
+                    keyboardType='default'
+                    value={name}
+                    onChangeText={setName}
+                />
             </View>
 
-            {/*TEXTINPUT DE NOME DE USUÁRIO*/}
             <View style={styles.containerTxtInput}>
                 <MaterialIcons style={styles.iconTextInput} name='account-eye' size={20}/>
-                <TextInput style={styles.txtInput} placeholder='NOME DE USUÁRIO' keyboardType='email-address'/>
+                <TextInput
+                    style={styles.txtInput}
+                    placeholder='NOME DE USUÁRIO'
+                    keyboardType='default'
+                    value={username}
+                    onChangeText={setUsername}
+                />
             </View>
 
-            {/*TEXTINPUT DE CPF OU CNPJ*/}
-            <View style={styles.containerTxtInput}>
-                <MaterialIcons style={styles.iconTextInput} name='card-account-details' size={20}/>
-                <TextInput style={styles.txtInput} placeholder='CPF' keyboardType='numeric'/>
-            </View>
-
-            {/*TEXTINPUT DE EMAIL*/}
             <View style={styles.containerTxtInput}>
                 <MaterialIcons style={styles.iconTextInput} name='email' size={20}/>
-                <TextInput style={styles.txtInput} placeholder='E-MAIL' keyboardType='email-address'/>
+                <TextInput
+                    style={styles.txtInput}
+                    placeholder='E-MAIL'
+                    keyboardType='email-address'
+                    value={email}
+                    onChangeText={setEmail}
+                />
             </View>
 
-            {/*TEXTINPUT DE SENHA*/}
             <View style={styles.containerTxtInput}>
                 <MaterialIcons style={styles.iconTextInput} name='form-textbox-password' size={20}/>
-                <TextInput style={styles.txtInput} placeholder='SUA SENHA' secureTextEntry={true}/>
+                <TextInput
+                    style={styles.txtInput}
+                    placeholder='SUA SENHA'
+                    secureTextEntry={true}
+                    value={password}
+                    onChangeText={setPassword}
+                />
             </View>
 
-            {/*TEXTINPUT DE CONFIRMAR SENHA*/}
             <View style={styles.containerTxtInput}>
                 <MaterialIcons style={styles.iconTextInput} name='form-textbox-password' size={20}/>
-                <TextInput style={styles.txtInput} placeholder='CONFIRME SUA SENHA' secureTextEntry={true}/>
+                <TextInput
+                    style={styles.txtInput}
+                    placeholder='CONFIRME SUA SENHA'
+                    secureTextEntry={true}
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                />
             </View>
 
-            {/*BOTAO DE LOGIN*/}
             <View style={styles.containerRegister}>
-            <LinearGradient style={styles.btmRegister}
-                colors={['#9D66F6', '#8148DC', '#5D21BC']}>
-                <TouchableOpacity
-                    onPress={() => {
-                        navigation.navigate('LoginParticipante');
-                    }}>
-                    <Text style={styles.txtRegister}>CRIAR</Text>
-                </TouchableOpacity>
-            </LinearGradient>
+                <LinearGradient style={styles.btmRegister} colors={['#9D66F6', '#8148DC', '#5D21BC']}>
+                    <TouchableOpacity onPress={handleRegister}>
+                        <Text style={styles.txtRegister}>CRIAR</Text>
+                    </TouchableOpacity>
+                </LinearGradient>
             </View>
 
-            <View style={styles.containerLoginCom}>
+            {/* <View style={styles.containerLoginCom}>
                 <TouchableOpacity style={styles.btmLoginCom}>
-                    <Image
-                        source={require('../assets/imagens/google.png')}
-                    />
+                    <Image source={require('../assets/imagens/google.png')} />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.btmLoginCom}>
-                    <Image
-                        source={require('../assets/imagens/facebook.png')}
-                    />
+                    <Image source={require('../assets/imagens/facebook.png')} />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.btmLoginCom}>
-                    <Image
-                        source={require('../assets/imagens/apple.png')}
-                    />
+                    <Image source={require('../assets/imagens/apple.png')} />
                 </TouchableOpacity>
-            </View>
-
+            </View> */}
         </SafeAreaView>
     );
 }
+
 
 const styles = StyleSheet.create({
     btmLoginCom: {

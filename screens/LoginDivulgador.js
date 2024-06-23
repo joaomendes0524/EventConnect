@@ -1,62 +1,89 @@
-import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View, Image } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View, Alert } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginDivulgador({ navigation }) {
-  return (
-    <SafeAreaView style={styles.container}>
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-      {/*TITULO DE CADASTRO*/}
-      {<Text style={styles.texto}>Bem vindo de volta!</Text>}
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post('http://192.168.0.6:3000/divulgador/login', {
+                email,
+                password
+            });
 
-      {/*TEXTINPUT DE EMAIL*/}
-      <View style={styles.containerTxtInput}>
-        <MaterialIcons style={styles.iconTextInput} name='email' size={20} />
-        <TextInput style={styles.txtInput} placeholder='E-MAIL' keyboardType='email-address' />
-      </View>
+            if (response.status === 200) {
+                const { token } = response.data;
+                await AsyncStorage.setItem('userToken', token);
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-      {/*TEXTINPUT DE SENHA*/}
-      <View style={styles.containerTxtInput}>
-        <MaterialIcons style={styles.iconTextInput} name='form-textbox-password' size={20} />
-        <TextInput style={styles.txtInput} placeholder='SENHA' secureTextEntry={true} />
-      </View>
+                Alert.alert('Sucesso', 'Login realizado com sucesso!');
+                navigation.navigate('DivulgadorTabs');
+            }
+        } catch (error) {
+            console.error(error);
+            Alert.alert('Erro', 'Erro ao fazer login. Por favor, verifique suas credenciais.');
+        }
+    };
 
-      {/*BOTAO ESQUECEU SENHA*/}
-      <View>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            navigation.navigate('ForgotPassword'); {/*RECUPERAR SENHA*/}
-          }}>
-          <Text style={styles.recoverSenha}>Esqueceu a senha?</Text>
-        </TouchableWithoutFeedback>
-      </View>
+    return (
+        <SafeAreaView style={styles.container}>
+            <Text style={styles.texto}>Bem vindo de volta!</Text>
 
-      {/*BOTAO DE LOGIN*/}
-      <View style={styles.containerRegister}>
-      <LinearGradient style={styles.btmRegister}
-        colors={['#9D66F6', '#8148DC', '#5D21BC']}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('DivulgadorTabs'); {/*IR PARA FEED*/}
-          }}>
-          <Text style={styles.txtRegister}>Entrar</Text>
-        </TouchableOpacity>
-        </LinearGradient>
-      </View>
+            <View style={styles.containerTxtInput}>
+                <MaterialIcons style={styles.iconTextInput} name='email' size={20} />
+                <TextInput
+                    style={styles.txtInput}
+                    placeholder='E-MAIL'
+                    keyboardType='email-address'
+                    value={email}
+                    onChangeText={setEmail}
+                />
+            </View>
 
-      {/*BOTAO CRIAR CONTA*/}
-      <View style={styles.btmCreate}>
-        <Text>Não tem conta?</Text>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            navigation.navigate('CreateDivulgador'); {/*IR PARA CREATE DIVULGADOR*/}
-          }}>
-          <Text style={styles.btmNoFeedback}> Crie agora</Text>
-        </TouchableWithoutFeedback>
-      </View>
+            <View style={styles.containerTxtInput}>
+                <MaterialIcons style={styles.iconTextInput} name='form-textbox-password' size={20} />
+                <TextInput
+                    style={styles.txtInput}
+                    placeholder='SENHA'
+                    secureTextEntry={true}
+                    value={password}
+                    onChangeText={setPassword}
+                />
+            </View>
 
-    </SafeAreaView>
-  );
+            <View>
+                <TouchableWithoutFeedback
+                    onPress={() => {
+                        navigation.navigate('ForgotPassword');
+                    }}>
+                    <Text style={styles.recoverSenha}>Esqueceu a senha?</Text>
+                </TouchableWithoutFeedback>
+            </View>
+
+            <View style={styles.containerRegister}>
+                <LinearGradient style={styles.btmRegister} colors={['#9D66F6', '#8148DC', '#5D21BC']}>
+                    <TouchableOpacity onPress={handleLogin}>
+                        <Text style={styles.txtRegister}>Entrar</Text>
+                    </TouchableOpacity>
+                </LinearGradient>
+            </View>
+
+            <View style={styles.btmCreate}>
+                <Text>Não tem conta?</Text>
+                <TouchableWithoutFeedback
+                    onPress={() => {
+                        navigation.navigate('CreateDivulgador');
+                    }}>
+                    <Text style={styles.btmNoFeedback}> Crie agora</Text>
+                </TouchableWithoutFeedback>
+            </View>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({

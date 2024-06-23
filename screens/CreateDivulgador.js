@@ -1,60 +1,110 @@
-import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, SafeAreaView, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CreateDivulgador({ navigation }) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [cnpj, setCnpj] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleRegister = async () => {
+    if (password !== confirmPassword) {
+      Alert.alert('Erro', 'As senhas não coincidem.');
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://192.168.0.6:3000/divulgador/register', {
+      name,
+      password,
+      email,
+      cnpj,
+ });
+
+
+ if (response.status === 201) {
+      const { token } = response.data;
+      await AsyncStorage.setItem('userToken', token); // Armazenar o token no AsyncStorage
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Definir o token no cabeçalho do Axios
+
+      Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
+      navigation.navigate('LoginDivulgador');
+ }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Erro', 'Erro ao cadastrar usuário. Por favor, tente novamente.')
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-
-      {/*TITULO DE CADASTRO*/}
-      {<Text style={styles.texto}>Olá! Cadastre-se para divulgar seus eventos</Text>}
-
-      {/*TEXTINPUT DE NOME*/}
+      <Text style={styles.texto}>Olá! Cadastre-se para divulgar seus eventos</Text>
       <View style={styles.containerTxtInput}>
         <MaterialIcons style={styles.iconTextInput} name='account-edit' size={20} />
-        <TextInput style={styles.txtInput} placeholder='NOME' keyboardType='email-address' />
+        <TextInput
+          style={styles.txtInput}
+          placeholder='NOME'
+          value={name}
+          onChangeText={setName}
+        />
       </View>
-
-      {/*TEXTINPUT DE CPF OU CNPJ*/}
       <View style={styles.containerTxtInput}>
         <MaterialIcons style={styles.iconTextInput} name='card-account-details' size={20} />
-        <TextInput style={styles.txtInput} placeholder='CPF OU CNPJ' keyboardType='numeric' />
+        <TextInput
+          style={styles.txtInput}
+          placeholder='CPF OU CNPJ'
+          keyboardType='numeric'
+          value={cnpj}
+          onChangeText={setCnpj}
+        />
       </View>
-
-      {/*TEXTINPUT DE EMAIL*/}
       <View style={styles.containerTxtInput}>
         <MaterialIcons style={styles.iconTextInput} name='email' size={20} />
-        <TextInput style={styles.txtInput} placeholder='E-MAIL' keyboardType='email-address' />
+        <TextInput
+          style={styles.txtInput}
+          placeholder='E-MAIL'
+          keyboardType='email-address'
+          value={email}
+          onChangeText={setEmail}
+        />
       </View>
-
-      {/*TEXTINPUT DE SENHA*/}
       <View style={styles.containerTxtInput}>
         <MaterialIcons style={styles.iconTextInput} name='form-textbox-password' size={20} />
-        <TextInput style={styles.txtInput} placeholder='SUA SENHA' secureTextEntry={true} />
+        <TextInput
+          style={styles.txtInput}
+          placeholder='SUA SENHA'
+          secureTextEntry={true}
+          value={password}
+          onChangeText={setPassword}
+        />
       </View>
-
-      {/*TEXTINPUT DE CONFIRMAR SENHA*/}
       <View style={styles.containerTxtInput}>
         <MaterialIcons style={styles.iconTextInput} name='form-textbox-password' size={20} />
-        <TextInput style={styles.txtInput} placeholder='CONFIRME SUA SENHA' secureTextEntry={true} />
+        <TextInput
+          style={styles.txtInput}
+          placeholder='CONFIRME SUA SENHA'
+          secureTextEntry={true}
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+        />
       </View>
-
-      {/*BOTAO DE LOGIN*/}
       <View style={styles.containerRegister}>
-        <LinearGradient style={styles.btmRegister}
-          colors={['#9D66F6', '#8148DC', '#5D21BC']}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('LoginDivulgador');
-            }}>
+        <LinearGradient style={styles.btmRegister} colors={['#9D66F6', '#8148DC', '#5D21BC']}>
+          <TouchableOpacity onPress={handleRegister}>
             <Text style={styles.txtRegister}>CRIAR</Text>
           </TouchableOpacity>
         </LinearGradient>
       </View>
-
     </SafeAreaView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -85,12 +135,12 @@ const styles = StyleSheet.create({
   },
   txtInput: {
     padding: 10,
+    flex: 1,
   },
   containerRegister: {
     justifyContent: 'center',
     alignItems: 'center'
   },
-
   btmRegister: {
     textAlign: 'center',
     marginTop: 30,

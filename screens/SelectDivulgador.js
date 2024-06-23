@@ -34,7 +34,7 @@ export default function SelectDivulgador({ navigation }) {
         <LinearGradient style={styles.button}
         colors={['#9D66F6', '#8148DC', '#5D21BC']}>
         <TouchableOpacity
-          onPress={() => {
+          onPress={(handleRegisterPress) => {
             navigation.navigate('CreateDivulgador');
           }}>
           <Text style={styles.txtButton}>Cadastrar</Text>

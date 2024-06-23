@@ -1,90 +1,83 @@
-import React from 'react';
-import { View, FlatList, StyleSheet, Image, Text, TouchableOpacity, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, FlatList, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient';
-
-
-const posts = [
-  {
-    id: '1',
-    user: 'Barzinho do ze',
-    followers: '2,445 seguidores',
-    avatar: require('../assets/imagens/image-background.jpeg'),
-    image: require('../assets/imagens/image-background.jpeg'),
-    description: 'Binance Expands Account Statement Function...',
-  },
-  {
-    id: '2',
-    user: 'forrozinho',
-    followers: '4,340 seguidores',
-    avatar: require('../assets/imagens/image-background.jpeg'),
-    image: require('../assets/imagens/image-background.jpeg'),
-    description: 'Binance Expands Account Statement Function...',
-  },
-  {
-    id: '3',
-    user: 'forrozinho 2',
-    followers: '4,340 seguidores',
-    avatar: require('../assets/imagens/image-background.jpeg'),
-    image: require('../assets/imagens/image-background.jpeg'),
-    description: 'Binance Expands Account Statement Function...',
-  },
-  {
-    id: '4',
-    user: 'forrozinho 3',
-    followers: '4,340 seguidores',
-    avatar: require('../assets/imagens/image-background.jpeg'),
-    image: require('../assets/imagens/image-background.jpeg'),
-    description: 'Binance Expands Account Statement Function...',
-  },
-];
+import axios from 'axios';
 
 export default function FeedScreen({ navigation }) {
-    const renderItem = ({ item }) => (
-      <View style={styles.card}>
-        <View style={styles.header}>
-          <Image source={item.avatar} style={styles.avatar} />
-          <View style={styles.userInfo}>
-            <Text style={styles.username}>{item.user}</Text>
-            <Text style={styles.followers}>{item.followers}</Text>
-          </View>
-          <LinearGradient style={styles.followButton}
-            colors={['#9D66F6', '#8148DC', '#5D21BC']}>
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Função para buscar os posts da API
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get('http://192.168.0.6:3000/event/'); // Substitua pelo URL da sua API
+        setPosts(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar posts:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  const renderItem = ({ item }) => (
+    <View style={styles.card}>
+      <View style={styles.header}>
+        {/* <Image source={{ uri: item.avatar }} style={styles.avatar} /> */}
+        <View style={styles.userInfo}>
+          <Text style={styles.username}>{item.user}</Text>
+          <Text style={styles.followers}>{item.followers}</Text>
+        </View>
+        <LinearGradient
+          style={styles.followButton}
+          colors={['#9D66F6', '#8148DC', '#5D21BC']}
+        >
           <TouchableOpacity onPress={() => navigation.navigate('Profile', { userId: item.id })}>
             <Text style={styles.followButtonText}>Seguir</Text>
           </TouchableOpacity>
-          </LinearGradient>
-        </View>
-        <Text style={styles.description}>{item.description}</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('PostDetail', { postId: item.id })}>
-          <Image source={item.image} style={styles.postImage} />
-        </TouchableOpacity>
-        <View style={styles.actions}>
-          <TouchableOpacity onPress={() => {/* Ação de curtir */}}>
-            <MaterialCommunityIcons name="thumb-up-outline" size={24} color="#000" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {/* Ação de comentar */}}>
-            <MaterialCommunityIcons name="comment-outline" size={24} color="#000" />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => {/* BOTÃO DE DETALHES DO EVENTO */}}>
-            <MaterialCommunityIcons name="dots-horizontal" size={24} color="#000" />
-          </TouchableOpacity>
-        </View>
-
+        </LinearGradient>
       </View>
-    );
-  
+      <Text style={styles.description}>{item.description}</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('PostDetail', { postId: item.id })}>
+        <Image source={{ uri: item.image }} style={styles.postImage} />
+      </TouchableOpacity>
+      <View style={styles.actions}>
+        <TouchableOpacity onPress={() => {/* Ação de curtir */}}>
+          <MaterialCommunityIcons name="thumb-up-outline" size={24} color="#000" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {/* Ação de comentar */}}>
+          <MaterialCommunityIcons name="comment-outline" size={24} color="#000" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {/* BOTÃO DE DETALHES DO EVENTO */}}>
+          <MaterialCommunityIcons name="dots-horizontal" size={24} color="#000" />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+
+  if (loading) {
     return (
       <View style={styles.container}>
-        <FlatList
-          data={posts}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-        />
+        <Text>Carregando...</Text>
       </View>
     );
   }
+
+  return (
+    <View style={styles.container}>
+      <Text>Carregou</Text> {/* texto teste */}
+      <FlatList
+        data={posts}
+        renderItem={renderItem}
+        keyExtractor={item => item.id.toString()}
+      />
+    </View>
+  );
+}
   
   const styles = StyleSheet.create({
     container: {
