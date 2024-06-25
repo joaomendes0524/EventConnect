@@ -12,7 +12,7 @@ export default function FeedScreen({ navigation }) {
     // Função para buscar os posts da API
     const fetchPosts = async () => {
       try {
-        const response = await axios.get('http://192.168.0.6:3000/event/'); // Substitua pelo URL da sua API
+        const response = await axios.get('http://10.0.205.68:3000/event/'); // Substitua pelo URL da sua API
         setPosts(response.data);
       } catch (error) {
         console.error('Erro ao buscar posts:', error);
@@ -24,26 +24,25 @@ export default function FeedScreen({ navigation }) {
     fetchPosts();
   }, []);
 
+
   const renderItem = ({ item }) => (
     <View style={styles.card}>
       <View style={styles.header}>
-        {/* <Image source={{ uri: item.avatar }} style={styles.avatar} /> */}
+        <Image source={{ uri: item.createdBy.avatar }} style={styles.avatar} />
         <View style={styles.userInfo}>
-          <Text style={styles.username}>{item.user}</Text>
-          <Text style={styles.followers}>{item.followers}</Text>
+          <Text style={styles.username}>{item.createdBy.name}</Text>
+          <Text style={styles.followers}>{item.createdBy.username}</Text>
         </View>
-        <LinearGradient
-          style={styles.followButton}
-          colors={['#9D66F6', '#8148DC', '#5D21BC']}
-        >
-          <TouchableOpacity onPress={() => navigation.navigate('Profile', { userId: item.id })}>
+        <LinearGradient style={styles.followButton}
+          colors={['#9D66F6', '#8148DC', '#5D21BC']}>
+          <TouchableOpacity onPress={() => navigation.navigate('Profile', { userId: item.createdBy._id })}>
             <Text style={styles.followButtonText}>Seguir</Text>
           </TouchableOpacity>
         </LinearGradient>
       </View>
       <Text style={styles.description}>{item.description}</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('PostDetail', { postId: item.id })}>
-        <Image source={{ uri: item.image }} style={styles.postImage} />
+      <TouchableOpacity onPress={() => navigation.navigate('PostDetail', { postId: item._id })}>
+        <Image source={{ uri: item.image.url }} style={styles.postImage} />
       </TouchableOpacity>
       <View style={styles.actions}>
         <TouchableOpacity onPress={() => {/* Ação de curtir */}}>
@@ -59,22 +58,24 @@ export default function FeedScreen({ navigation }) {
     </View>
   );
 
-  if (loading) {
-    return (
-      <View style={styles.container}>
-        <Text>Carregando...</Text>
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
-      <Text>Carregou</Text> {/* texto teste */}
-      <FlatList
-        data={posts}
-        renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-      />
+      {posts && posts.length > 0 ? (
+        <FlatList
+          data={posts}
+          renderItem={renderItem}
+          keyExtractor={item => {
+            if (item && item._id) { // Certifique-se de que o _id esteja presente
+              return item._id.toString();
+            } else {
+              console.error('Post sem id:', item);
+              return Math.random().toString(); // Usar um fallback para id inválido
+            }
+          }}
+        />
+      ) : (
+        <Text>Nenhum post encontrado.</Text>
+      )}
     </View>
   );
 }
