@@ -4,7 +4,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { SERVER_IP } from '@env';
 
 export default function LoginParticipante({ navigation }) {
   const [email, setEmail] = useState('');
@@ -22,7 +22,7 @@ export default function LoginParticipante({ navigation }) {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.0.4:3000/user/login', {
+      const response = await axios.post(`http://${SERVER_IP}:3000/user/login`, {
         email,
         password,
       });
@@ -87,17 +87,6 @@ export default function LoginParticipante({ navigation }) {
           <Text style={styles.btmNoFeedback}> Crie agora</Text>
         </TouchableWithoutFeedback>
       </View>
-      {/* <View style={styles.containerLoginCom}>
-        <TouchableOpacity style={styles.btmLoginCom}>
-          <Image source={require('../assets/imagens/google.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btmLoginCom}>
-          <Image source={require('../assets/imagens/facebook.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btmLoginCom}>
-          <Image source={require('../assets/imagens/apple.png')} />
-        </TouchableOpacity>
-      </View> */}
     </SafeAreaView>
   );
 }

@@ -4,6 +4,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SERVER_IP } from '@env';
 
 export default function CreateDivulgador({ navigation }) {
   const [name, setName] = useState('');
@@ -20,7 +21,7 @@ export default function CreateDivulgador({ navigation }) {
     }
 
     try {
-      const response = await axios.post('http://192.168.0.6:3000/divulgador/register', {
+      const response = await axios.post(`http://http://${SERVER_IP}:3000/divulgador/register`, {
         name,
         password,
         email,

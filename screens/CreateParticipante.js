@@ -3,6 +3,7 @@ import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableOpacity, Imag
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
+import { SERVER_IP } from '@env';
 
 export default function CreateParticipante({ navigation }) {
     const [name, setName] = useState('');
@@ -18,7 +19,7 @@ export default function CreateParticipante({ navigation }) {
         }
 
         try {
-            const response = await axios.post('http://192.168.28.44:3000/users/register', {
+            const response = await axios.post(`http://http://${SERVER_IP}:3000/users/register`, {
                 name,
                 username,
                 email,

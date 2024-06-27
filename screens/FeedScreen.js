@@ -3,17 +3,21 @@ import { View, FlatList, StyleSheet, Image, Text, TouchableOpacity } from 'react
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
+import { SERVER_IP } from '@env';
 
 export default function FeedScreen({ navigation }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Função para buscar os posts da API
     const fetchPosts = async () => {
       try {
-        const response = await axios.get('http://10.0.205.68:3000/event/'); // Substitua pelo URL da sua API
-        setPosts(response.data);
+        const url = `http://${SERVER_IP}:3000/events/`;
+
+        // Log para verificar a URL
+      // console.log('Fetching posts from URL:', url);
+      const response = await axios.get(url); 
+      setPosts(response.data);
       } catch (error) {
         console.error('Erro ao buscar posts:', error);
       } finally {
@@ -23,7 +27,6 @@ export default function FeedScreen({ navigation }) {
 
     fetchPosts();
   }, []);
-
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
@@ -41,9 +44,11 @@ export default function FeedScreen({ navigation }) {
         </LinearGradient>
       </View>
       <Text style={styles.description}>{item.description}</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('PostDetail', { postId: item._id })}>
-        <Image source={{ uri: item.image.url }} style={styles.postImage} />
-      </TouchableOpacity>
+      {item.image && (
+        <TouchableOpacity onPress={() => navigation.navigate('PostDetail', { postId: item._id })}>
+          <Image source={{ uri: item.image }} style={styles.postImage} />
+        </TouchableOpacity>
+      )}
       <View style={styles.actions}>
         <TouchableOpacity onPress={() => {/* Ação de curtir */}}>
           <MaterialCommunityIcons name="thumb-up-outline" size={24} color="#000" />
@@ -60,18 +65,13 @@ export default function FeedScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {posts && posts.length > 0 ? (
+      {loading ? (
+        <Text>Carregando...</Text>
+      ) : posts && posts.length > 0 ? (
         <FlatList
           data={posts}
           renderItem={renderItem}
-          keyExtractor={item => {
-            if (item && item._id) { // Certifique-se de que o _id esteja presente
-              return item._id.toString();
-            } else {
-              console.error('Post sem id:', item);
-              return Math.random().toString(); // Usar um fallback para id inválido
-            }
-          }}
+          keyExtractor={item => item._id ? item._id.toString() : Math.random().toString()}
         />
       ) : (
         <Text>Nenhum post encontrado.</Text>

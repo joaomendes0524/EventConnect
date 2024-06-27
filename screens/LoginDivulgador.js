@@ -4,6 +4,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SERVER_IP } from '@env';
 
 export default function LoginDivulgador({ navigation }) {
   const [email, setEmail] = useState('');
@@ -11,7 +12,7 @@ export default function LoginDivulgador({ navigation }) {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.0.4:3000/divulgador/login', {
+      const response = await axios.post(`http://${SERVER_IP}:3000/divulgador/login`, {
         email,
         password
       });
