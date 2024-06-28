@@ -21,7 +21,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="MainTabs">
+      <Stack.Navigator initialRouteName="SelectProfile">
 
         <Stack.Screen
           name="SelectProfile" // referencia a tela para acessar ela
