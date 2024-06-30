@@ -1,23 +1,52 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ip} from '../ip';
 
 export default function EditEvents({ navigation }) {
-  const [events, setEvents] = useState([
-    { id: '1', name: 'Evento 1', description: 'Descrição do evento 1', date: new Date().toLocaleDateString() },
-    { id: '2', name: 'Evento 2', description: 'Descrição do evento 2', date: new Date().toLocaleDateString() },
-    { id: '3', name: 'Evento 3', description: 'Descrição do evento 3', date: new Date().toLocaleDateString() },
-    { id: '4', name: 'Evento 4', description: 'Descrição do evento 4', date: new Date().toLocaleDateString() },
-    { id: '5', name: 'Evento 5', description: 'Descrição do evento 5', date: new Date().toLocaleDateString() },
-    // Adicione mais eventos conforme necessário
-  ]);
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const token = await AsyncStorage.getItem('userToken'); // Recupera o token do AsyncStorage
+        if (!token) {
+          Alert.alert('Erro', 'Usuário não autenticado');
+          navigation.navigate('LoginDivulgador');
+          return;
+        }
+
+        const response = await axios.get(`http://${ip}:3000/events`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 200) {
+          setEvents(response.data);
+        } else {
+          Alert.alert('Erro', 'Não foi possível carregar os eventos. Tente novamente.');
+        }
+      } catch (error) {
+        console.error('Erro ao buscar eventos:', error);
+        Alert.alert('Erro', 'Ocorreu um erro ao buscar os eventos.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   const renderItem = ({ item }) => (
     <View style={styles.eventItem}>
       <View style={styles.eventDetails}>
-        <Text style={styles.eventName}>{item.name}</Text>
+        <Text style={styles.eventName}>{item.title}</Text>
         <Text style={styles.eventDescription}>{item.description}</Text>
-        <Text style={styles.eventDate}>{item.date}</Text>
+        <Text style={styles.eventDate}>{new Date(item.date).toLocaleDateString()}</Text>
       </View>
       <TouchableOpacity onPress={() => navigation.navigate('EditMyEvent', { eventId: item.id })}>
         <MaterialCommunityIcons name="chevron-right" size={40} color="#6100FF" />
@@ -25,12 +54,20 @@ export default function EditEvents({ navigation }) {
     </View>
   );
 
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text>Carregando eventos...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <FlatList
         data={events}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id ? item.id.toString() : `${Math.random()}`}
       />
     </View>
   );

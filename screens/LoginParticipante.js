@@ -4,7 +4,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SERVER_IP } from '@env';
+import {ip} from "../ip";
 
 export default function LoginParticipante({ navigation }) {
   const [email, setEmail] = useState('');
@@ -22,7 +22,7 @@ export default function LoginParticipante({ navigation }) {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(`http://${SERVER_IP}:3000/user/login`, {
+      const response = await axios.post(`http://${ip}:3000/users/login`, {
         email,
         password,
       });
@@ -90,7 +90,6 @@ export default function LoginParticipante({ navigation }) {
     </SafeAreaView>
   );
 }
-
 
 
 const styles = StyleSheet.create({

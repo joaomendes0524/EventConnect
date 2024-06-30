@@ -11,9 +11,8 @@ import LoginParticipante from "./screens/LoginParticipante";
 import RedefPassword from "./screens/RedefinePassword";
 import ForgotPassword from "./screens/ForgotPassword";
 import MainTabs from './screens/MainTabs';
-import DivulgadorTabs from './screens/DivulgadorTabs'
-import EditMyEvent from './screens/EditMyEvent'
-// import CreateEvent from "./screens/CreateEvent";
+import DivulgadorTabs from './screens/DivulgadorTabs';
+import EditMyEvent from './screens/EditMyEvent';
 
 const Stack = createNativeStackNavigator();
 

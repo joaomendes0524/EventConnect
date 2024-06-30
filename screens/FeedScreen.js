@@ -3,7 +3,7 @@ import { View, FlatList, StyleSheet, Image, Text, TouchableOpacity } from 'react
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
-import { SERVER_IP } from '@env';
+import {ip} from '../ip';
 
 export default function FeedScreen({ navigation }) {
   const [posts, setPosts] = useState([]);
@@ -12,7 +12,7 @@ export default function FeedScreen({ navigation }) {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const url = `http://${SERVER_IP}:3000/events/`;
+        const url = `http://${ip}:3000/events/`;
 
         // Log para verificar a URL
       // console.log('Fetching posts from URL:', url);

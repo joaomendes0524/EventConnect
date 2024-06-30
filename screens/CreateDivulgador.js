@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, TextInput, TouchableOpacity, View, Alert, KeyboardAvoidingView, ScrollView } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SERVER_IP } from '@env';
+import {ip} from "../ip";
 
 export default function CreateDivulgador({ navigation }) {
   const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [cnpj, setCnpj] = useState('');
   const [cpf, setCpf] = useState('');
@@ -21,8 +21,9 @@ export default function CreateDivulgador({ navigation }) {
     }
 
     try {
-      const response = await axios.post(`http://http://${SERVER_IP}:3000/divulgador/register`, {
+      const response = await axios.post(`http://${ip}:3000/divulgador/register`, {
         name,
+        username,
         password,
         email,
         cnpj,
@@ -30,9 +31,9 @@ export default function CreateDivulgador({ navigation }) {
 
 
       if (response.status === 201) {
-        const { token } = response.data;
-        await AsyncStorage.setItem('userToken', token); // Armazenar o token no AsyncStorage
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Definir o token no cabeçalho do Axios
+        // const { token } = response.data;
+        // await AsyncStorage.setItem('userToken', token); // Armazenar o token no AsyncStorage
+        // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Definir o token no cabeçalho do Axios
 
         Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
         navigation.navigate('LoginDivulgador');
@@ -44,7 +45,10 @@ export default function CreateDivulgador({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <KeyboardAvoidingView style={styles.container}
+    // style={{ flex: 1 }}
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
+    <ScrollView contentContainerStyle={styles.container2}>
       <Text style={styles.texto}>Olá! Cadastre-se para divulgar seus eventos</Text>
       <View style={styles.containerTxtInput}>
         <MaterialIcons style={styles.iconTextInput} name='account-edit' size={20} />
@@ -55,6 +59,18 @@ export default function CreateDivulgador({ navigation }) {
           onChangeText={setName}
         />
       </View>
+
+      <View style={styles.containerTxtInput}>
+                <MaterialIcons style={styles.iconTextInput} name='account-eye' size={20} />
+                <TextInput
+                    style={styles.txtInput}
+                    placeholder='NOME DE USUÁRIO'
+                    keyboardType='default'
+                    value={username}
+                    onChangeText={setUsername}
+                />
+            </View>
+
       <View style={styles.containerTxtInput}>
         <MaterialIcons style={styles.iconTextInput} name='card-account-details' size={20} />
         <TextInput
@@ -102,11 +118,15 @@ export default function CreateDivulgador({ navigation }) {
           </TouchableOpacity>
         </LinearGradient>
       </View>
-    </SafeAreaView>
+    </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
+  container2: {
+    flexGrow: 10,
+  },
   container: {
     flex: 1,
     backgroundColor: '#FFF',

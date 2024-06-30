@@ -3,7 +3,7 @@ import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableOpacity, Imag
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
-import { SERVER_IP } from '@env';
+import {ip} from '../ip';
 
 export default function CreateParticipante({ navigation }) {
     const [name, setName] = useState('');
@@ -19,7 +19,7 @@ export default function CreateParticipante({ navigation }) {
         }
 
         try {
-            const response = await axios.post(`http://http://${SERVER_IP}:3000/users/register`, {
+            const response = await axios.post(`http://${ip}:3000/users/register`, {
                 name,
                 username,
                 email,
@@ -102,23 +102,6 @@ export default function CreateParticipante({ navigation }) {
                     </TouchableOpacity>
                 </LinearGradient>
             </View>
-
-            {/* <View style={styles.containerLoginCom}>
-                <TouchableOpacity style={styles.btmLoginCom}>
-                    <Image source={require('../assets/imagens/google.png')} />
-                    <Image source={require('../assets/imagens/google.png')} />
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.btmLoginCom}>
-                    <Image source={require('../assets/imagens/facebook.png')} />
-                    <Image source={require('../assets/imagens/facebook.png')} />
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.btmLoginCom}>
-                    <Image source={require('../assets/imagens/apple.png')} />
-                    <Image source={require('../assets/imagens/apple.png')} />
-                </TouchableOpacity>
-            </View> */}
         </SafeAreaView>
     );
 }
